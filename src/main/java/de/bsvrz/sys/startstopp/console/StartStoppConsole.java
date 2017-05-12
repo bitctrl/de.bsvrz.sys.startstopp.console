@@ -43,7 +43,11 @@ public class StartStoppConsole {
 				e.printStackTrace();
 			}
 		}
-		Terminal term = new DefaultTerminalFactory().createTerminal();
+		DefaultTerminalFactory factory = new DefaultTerminalFactory();
+		factory.setTelnetPort(6500);
+		factory.setForceTextTerminal(true);
+		Terminal term = factory.createTerminal();
+		System.err.println("Term: " + term.getClass());
 		Screen screen = new TerminalScreen(term);
 		WindowBasedTextGUI gui = new MultiWindowTextGUI(screen);
 

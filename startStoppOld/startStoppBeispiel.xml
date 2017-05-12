@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE konfiguration PUBLIC "-//startstopp//DTD Dokument//DE" "startStopp.dtd">
+
+<konfiguration>
+  <startStopp Versionsnummer="1" ErstelltAm="19.09.2008 11:57:42" ErstelltDurch="Lensing/Drapp" Aenderungsgrund="Konfiguration">
+    <global>
+      <makrodefinition name="host" wert="127.0.0.1" />
+      <makrodefinition name="java" wert="C:/Programme/Java/jdk1.6.0_02/bin/java" />
+      <makrodefinition name="root" wert="C:/kernsoftware-startstopp-r1" />
+      <makrodefinition name="benutzer" wert="Tester" />
+      <makrodefinition name="passwortdatei" wert="%root%/skripte-dosshell/passwd" />
+      <makrodefinition name="authentifizierung" wert="-benutzer=%benutzer% -authentifizierung=%passwortdatei%" />
+      <makrodefinition name="dav1Host" wert="localhost" />
+      <makrodefinition name="dav1AppPort" wert="8083" />
+      <makrodefinition name="dav1DavPort" wert="8082" />
+      <makrodefinition name="debugDefaults" wert="-debugFilePath=%root%" />
+      <makrodefinition name="dav1einstellungen" wert="-davAppPort=%dav1AppPort% -davDavPort=%dav1DavPort% %debugDefaults%" />
+      <makrodefinition name="dav1" wert="-datenverteiler=%dav1Host%:%dav1AppPort% %authentifizierung% %debugDefaults%" />
+      <makrodefinition name="dav1OhneAuthentifizierung" wert="-datenverteiler=%dav1Host%:%dav1AppPort% %debugDefaults%" />
+      <kernsystem inkarnationsname="Datenverteiler" />
+      <kernsystem inkarnationsname="Konfiguration" />
+      <kernsystem inkarnationsname="Parametrierung" />
+      <kernsystem inkarnationsname="Betriebsmeldungsverwaltung" />
+      <zugangdav adresse="%host%" port="8083" username="Tester" passwort="geheim" />
+      <usv pid="usv.testUSV" />
+<!--
+      <usv pid="usv.testUSV" />
+      <rechner name="Rechner 1" tcpAdresse="192.0.1.96" />
+-->
+      <rechner name="Rechner 12" tcpAdresse="192.0.1.69" />
+
+      <protokolldatei name="dav" nameDatei="C:\kernsoftware-startstopp-r1\StartStopp\dav.TXT" groesse="1" />
+      <protokolldatei name="davfehler" nameDatei="C:\kernsoftware-startstopp-r1\StartStopp\dav.TXT" groesse="1" />
+      <protokolldatei name="konf" nameDatei="C:\kernsoftware-startstopp-r1\StartStopp\konfiguration.log" groesse="1" />
+      <protokolldatei name="konffehler" nameDatei="C:\kernsoftware-startstopp-r1\StartStopp\konfgurationFehler.log" groesse="1" />
+      <protokolldatei name="gem" nameDatei="C:\kernsoftware-startstopp-r1\StartStopp\gemeinsameDatei.log" groesse="1" />
+      <protokolldatei name="gemfehler" nameDatei="C:\kernsoftware-startstopp-r1\StartStopp\gemeinsameDateiFehler.log" groesse="1" />
+      <protokolldatei name="USOut" nameDatei="C:\kernsoftware-startstopp-r1\StartStopp\USout.txt" groesse="1" />
+      <protokolldatei name="USErr" nameDatei="C:\kernsoftware-startstopp-r1\StartStopp\USerr.txt" groesse="1" />
+      <protokolldatei name="App1.1Out" nameDatei="C:\kernsoftware-startstopp-r1\StartStopp\app1_1_out.txt" groesse="1" />
+      <protokolldatei name="App1.1Err" nameDatei="C:\kernsoftware-startstopp-r1\StartStopp\app1_1_err.txt" groesse="1" />
+      <protokolldatei name="App1.2Out" nameDatei="C:\kernsoftware-startstopp-r1\StartStopp\app1_2_out.txt" groesse="1" />
+      <protokolldatei name="App1.2Err" nameDatei="C:\kernsoftware-startstopp-r1\StartStopp\app1_2_err.txt" groesse="1" />
+      <protokolldatei name="App1.3Out" nameDatei="C:\kernsoftware-startstopp-r1\StartStopp\app1_3_out.txt" groesse="1" />
+      <protokolldatei name="App1.3Err" nameDatei="C:\kernsoftware-startstopp-r1\StartStopp\app1_3_err.txt" groesse="1" />
+      <protokolldatei name="App1.4Out" nameDatei="C:\kernsoftware-startstopp-r1\StartStopp\app1_4_out.txt" groesse="1" />
+      <protokolldatei name="App1.4Err" nameDatei="C:\kernsoftware-startstopp-r1\StartStopp\app1_4_err.txt" groesse="1" />
+    </global>
+    <applikationen>
+      <inkarnation name="Datenverteiler">
+        <applikation name="java -cp" />
+        <aufrufparameter wert=" %root%/distributionspakete/de.bsvrz.dav.dav/de.bsvrz.dav.dav-runtime.jar" />
+        <aufrufparameter wert=" -Xmx200m" />
+        <aufrufparameter wert=" de.bsvrz.dav.dav.main.Transmitter" />
+        <aufrufparameter wert=" %dav1einstellungen%" />
+        <aufrufparameter wert=" -rechtePruefung=nein" />
+        <aufrufparameter wert=" -debugLevelStdErrText=INFO" />
+        <aufrufparameter wert=" -debugLevelFileText=CONFIG" />
+        <startart option="automatisch" neustart="ja" intervall="" />
+        <standardAusgabe option="ignorieren" dateiname="dav" />
+        <standardFehlerAusgabe option="ignorieren" dateiname="davfehler" />
+        <startFehlerverhalten option="ignorieren" wiederholungen="5" />
+        <stoppFehlerverhalten option="ignorieren" wiederholungen="5" />
+      </inkarnation>
+      <inkarnation name="Konfiguration">
+        <applikation name="java -cp" />
+        <aufrufparameter wert=" %root%/distributionspakete/de.bsvrz.puk.config/de.bsvrz.puk.config-runtime.jar" />
+        <aufrufparameter wert=" -Xmx300m" />
+        <aufrufparameter wert=" de.bsvrz.puk.config.main.ConfigurationApp" />
+        <aufrufparameter wert=" %dav1OhneAuthentifizierung%" />
+        <aufrufparameter wert=" -benutzer=configuration" />
+        <aufrufparameter wert=" -authentifizierung=%passwortdatei%" />
+        <aufrufparameter wert=" -verwaltung=%root%/konfiguration/verwaltungsdaten.xml" />
+        <aufrufparameter wert=" -benutzerverwaltung=%root%/konfiguration/benutzerverwaltung.xml" />
+        <aufrufparameter wert=" -debugLevelStdErrText=INFO" />
+        <aufrufparameter wert=" -debugLevelFileText=CONFIG" />
+        <startart option="automatisch" neustart="ja" intervall="" />
+        <standardAusgabe option="eigene" dateiname="konf" />
+        <standardFehlerAusgabe option="eigene" dateiname="konffehler" />
+        <startFehlerverhalten option="ignorieren" wiederholungen="5" />
+        <stoppFehlerverhalten option="stopp" wiederholungen="1" />
+      </inkarnation>
+      <inkarnation name="Parametrierung">
+        <applikation name="java -cp" />
+        <aufrufparameter wert=" %root%/distributionspakete/de.kappich.puk.param/de.kappich.puk.param-runtime.jar" />
+        <aufrufparameter wert=" de.kappich.puk.param.main.ParamApp" />
+        <aufrufparameter wert=" %dav1%" />
+        <aufrufparameter wert=" -sleep=200" />
+        <aufrufparameter wert=" -parameterVerzeichnis=%root%/parameter_derby" />
+        <aufrufparameter wert=" -debugLevelStdErrText=WARNING" />
+        <aufrufparameter wert=" -debugLevelFileText=CONFIG" />
+        <startart option="automatisch" neustart="ja" intervall="" />
+        <standardAusgabe option="gemeinsame" dateiname="gem" />
+        <standardFehlerAusgabe option="gemeinsame" dateiname="gemfehler" />
+        <startFehlerverhalten option="ignorieren" wiederholungen="5" />
+        <stoppFehlerverhalten option="ignorieren" wiederholungen="5" />
+      </inkarnation>
+      <inkarnation name="Betriebsmeldungsverwaltung">
+        <applikation name="java -cp" />
+        <aufrufparameter wert=" %root%/distributionspakete/de.kappich.vew.bmvew/de.kappich.vew.bmvew-runtime.jar" />
+        <aufrufparameter wert=" de.kappich.vew.bmvew.main.SimpleMessageManager" />
+        <aufrufparameter wert=" %dav1%" />
+        <aufrufparameter wert=" -debugLevelStdErrText=WARNING" />
+        <aufrufparameter wert=" -debugLevelFileText=CONFIG" />
+        <startart option="automatisch" neustart="ja" intervall="" />
+        <standardAusgabe option="gemeinsame" dateiname="gem" />
+        <standardFehlerAusgabe option="gemeinsame" dateiname="gemfehler" />
+        <startFehlerverhalten option="ignorieren" wiederholungen="5" />
+        <stoppFehlerverhalten option="ignorieren" wiederholungen="5" />
+      </inkarnation>
+      <inkarnation name="Ueberpruefung System">
+        <applikation name="java -cp" />
+        <aufrufparameter wert=" %root%/distributionspakete/de.bsvrz.sys.testsys/de.bsvrz.sys.testsys.jar;%root%/distributionspakete/de.bsvrz.dav.dav/de.bsvrz.dav.dav-runtime.jar;%root%/distributionspakete/de.kappich.puk.param/de.kappich.puk.param-runtime.jar;%root%/distributionspakete/de.bsvrz.sys.funclib.application/de.bsvrz.sys.funclib.application.jar;%root%/distributionspakete/de.bsvrz.sys.funclib.operatingMessage/de.bsvrz.sys.funclib.operatingMessage.jar" />
+        <aufrufparameter wert=" -Xmx200m" />
+        <aufrufparameter wert=" de.bsvrz.sys.testsys.testsys.UeberpruefungSystemApp" />
+        <aufrufparameter wert=" %dav1%" />
+        <aufrufparameter wert=" -debugLevelStdErrText=INFO" />
+        <aufrufparameter wert=" -debugLevelFileText=CONFIG" />
+        <aufrufparameter wert=" -ueberpruefer=de.bsvrz.sys.testsys.modulUhrzeit.ModulUhrzeit" />
+        <startart option="automatisch" neustart="nein" intervall="" />
+        <standardAusgabe option="gemeinsame" dateiname="gem" />
+        <standardFehlerAusgabe option="gemeinsame" dateiname="gemfehler" />
+        <startFehlerverhalten option="ignorieren" wiederholungen="5" />
+        <stoppFehlerverhalten option="ignorieren" wiederholungen="5" />
+      </inkarnation>
+      <inkarnation name="Applikation 1.1">
+        <applikation name="java -cp" />
+        <aufrufparameter wert=" %root%/distributionspakete/de.bsvrz.sys.test.startstopp/de.bsvrz.sys.test.startstopp.jar;%root%/distributionspakete/de.bsvrz.dav.dav/de.bsvrz.dav.dav-runtime.jar;%root%/distributionspakete/de.kappich.puk.param/de.kappich.puk.param-runtime.jar;%root%/distributionspakete/de.bsvrz.sys.funclib.application/de.bsvrz.sys.funclib.application.jar;%root%/distributionspakete/de.bsvrz.sys.funclib.operatingMessage/de.bsvrz.sys.funclib.operatingMessage.jar" />
+        <aufrufparameter wert=" -Xmx200m" />
+        <aufrufparameter wert=" de.bsvrz.sys.test.startstopp.TestApp" />
+        <aufrufparameter wert=" %dav1%" />
+        <aufrufparameter wert=" -debugLevelStdErrText=INFO" />
+        <aufrufparameter wert=" -debugLevelFileText=CONFIG" />
+        <startart option="manuell" neustart="nein" intervall="" />
+<!--
+        <startbedingung vorgaenger="Applikation 1.2" warteart="Beginn" rechner="" wartezeit="30" />
+        <stoppbedingung nachfolger="Applikation 1.2" rechner="" wartezeit="30" />               
+-->
+        <standardAusgabe option="eigene" dateiname="App1.1Out" />
+        <standardFehlerAusgabe option="eigene" dateiname="App1.1Err" />
+        <startFehlerverhalten option="beenden" wiederholungen="0" />
+        <stoppFehlerverhalten option="abbruch" wiederholungen="0" />
+      </inkarnation>
+      <inkarnation name="Applikation 1.2">
+        <applikation name="java -cp" />
+        <aufrufparameter wert=" %root%/distributionspakete/de.bsvrz.sys.test.startstopp/de.bsvrz.sys.test.startstopp.jar;%root%/distributionspakete/de.bsvrz.dav.dav/de.bsvrz.dav.dav-runtime.jar;%root%/distributionspakete/de.kappich.puk.param/de.kappich.puk.param-runtime.jar;%root%/distributionspakete/de.bsvrz.sys.funclib.application/de.bsvrz.sys.funclib.application.jar;%root%/distributionspakete/de.bsvrz.sys.funclib.operatingMessage/de.bsvrz.sys.funclib.operatingMessage.jar" />
+        <aufrufparameter wert=" -Xmx3000m" />
+        <aufrufparameter wert=" de.bsvrz.sys.test.startstopp.TestApp" />
+        <aufrufparameter wert=" %dav1%" />
+        <aufrufparameter wert=" -debugLevelStdErrText=INFO" />
+        <aufrufparameter wert=" -debugLevelFileText=CONFIG" />
+        <startart option="automatisch" neustart="nein" intervall="" />
+        <startbedingung vorgaenger="Applikation 2.1" warteart="ende" rechner="Rechner 12" wartezeit="" />
+        <stoppbedingung nachfolger="Applikation 2.1" rechner="Rechner 12" wartezeit="" />               
+        <standardAusgabe option="gemeinsame" dateiname="gem" />
+        <standardFehlerAusgabe option="gemeinsame" dateiname="gemfehler" />
+        <startFehlerverhalten option="abbruch" wiederholungen="1" />
+        <stoppFehlerverhalten option="ignorieren" wiederholungen="0" />
+      </inkarnation>
+      <inkarnation name="Applikation 1.3">
+        <applikation name="java -cp" />
+        <aufrufparameter wert=" %root%/distributionspakete/de.bsvrz.sys.test.startstopp/de.bsvrz.sys.test.startstopp.jar;%root%/distributionspakete/de.bsvrz.dav.dav/de.bsvrz.dav.dav-runtime.jar;%root%/distributionspakete/de.kappich.puk.param/de.kappich.puk.param-runtime.jar;%root%/distributionspakete/de.bsvrz.sys.funclib.application/de.bsvrz.sys.funclib.application.jar;%root%/distributionspakete/de.bsvrz.sys.funclib.operatingMessage/de.bsvrz.sys.funclib.operatingMessage.jar" />
+        <aufrufparameter wert=" -Xmx200m" />
+        <aufrufparameter wert=" de.bsvrz.sys.test.startstopp.TestApp" />
+        <aufrufparameter wert=" %dav1%" />
+        <aufrufparameter wert=" -debugLevelStdErrText=INFO" />
+        <aufrufparameter wert=" -debugLevelFileText=CONFIG" />
+        <startart option="intervall" neustart="nein" intervall="* 2 * * *" />
+        <startbedingung vorgaenger="Applikation 1.2" warteart="ende" rechner="" wartezeit="" />
+        <stoppbedingung nachfolger="Applikation 1.2" rechner="" wartezeit="" />               
+        <standardAusgabe option="gemeinsame" dateiname="gem" />
+        <standardFehlerAusgabe option="gemeinsame" dateiname="gemfehler" />
+        <startFehlerverhalten option="ignorieren" wiederholungen="2" />
+        <stoppFehlerverhalten option="ignorieren" wiederholungen="5" />
+      </inkarnation>
+      <inkarnation name="Applikation 1.4">
+        <applikation name="java -cp" />
+        <aufrufparameter wert=" %root%/distributionspakete/de.bsvrz.sys.test.startstopp/de.bsvrz.sys.test.startstopp.jar;%root%/distributionspakete/de.bsvrz.dav.dav/de.bsvrz.dav.dav-runtime.jar;%root%/distributionspakete/de.kappich.puk.param/de.kappich.puk.param-runtime.jar;%root%/distributionspakete/de.bsvrz.sys.funclib.application/de.bsvrz.sys.funclib.application.jar;%root%/distributionspakete/de.bsvrz.sys.funclib.operatingMessage/de.bsvrz.sys.funclib.operatingMessage.jar" />
+        <aufrufparameter wert=" -Xmx200m" />
+        <aufrufparameter wert=" de.bsvrz.sys.test.startstopp.TestApp" />
+        <aufrufparameter wert=" %dav1%" />
+        <aufrufparameter wert=" -debugLevelStdErrText=INFO" />
+        <aufrufparameter wert=" -debugLevelFileText=CONFIG" />
+        <startart option="automatisch" neustart="nein" intervall="" />
+        <startbedingung vorgaenger="Applikation 1.2" warteart="beginn" rechner="" wartezeit="30" />
+        <standardAusgabe option="gemeinsame" dateiname="gem" />
+        <standardFehlerAusgabe option="gemeinsame" dateiname="gemfehler" />
+        <startFehlerverhalten option="ignorieren" wiederholungen="5" />
+        <stoppFehlerverhalten option="ignorieren" wiederholungen="5" />
+      </inkarnation>
+    </applikationen>
+  </startStopp>
+</konfiguration>
+

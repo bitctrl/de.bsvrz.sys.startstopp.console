@@ -31,7 +31,7 @@ public class StartStoppOnlineWindow extends BasicWindow implements WindowListene
 		Panel panel = new Panel();
 		panel.setLayoutManager(new GridLayout(1));
 		panel.setLayoutData(GridLayout.createLayoutData(Alignment.BEGINNING, Alignment.BEGINNING, true, true));
-		
+
 		Label infoLabel = new Label("s-System   p-Prozess   t - Theme   e - Editieren   i - Info");
 		panel.addComponent(infoLabel.withBorder(Borders.singleLine()));
 		infoLabel.setLayoutData(GridLayout.createHorizontallyFilledLayoutData(1));
@@ -53,40 +53,47 @@ public class StartStoppOnlineWindow extends BasicWindow implements WindowListene
 		case Character:
 			switch (keyStroke.getCharacter()) {
 			case 't':
-				ActionListDialogBuilder builder = new ActionListDialogBuilder().setTitle("Theme").setDescription("Choose a theme");
-				for( String theme : LanternaThemes.getRegisteredThemes()) {
+				ActionListDialogBuilder builder = new ActionListDialogBuilder().setTitle("Theme")
+						.setDescription("Choose a theme");
+				for (String theme : LanternaThemes.getRegisteredThemes()) {
 					builder.addAction(theme, new Runnable() {
 						@Override
 						public void run() {
 							setTheme(LanternaThemes.getRegisteredTheme(theme));
-							
+
 						}
 					});
-				};
+				}
+				;
 				builder.build().showDialog(getTextGUI());
 				break;
 			case 's':
 				builder = new ActionListDialogBuilder().setTitle("System");
-				builder.addActions(new StartStoppStoppAction(), new StartStoppRestartAction(), new StartStoppUpdateAction(), new TerminalCloseAction(this));
+				builder.addActions(new StartStoppStoppAction(), new StartStoppRestartAction(),
+						new StartStoppUpdateAction(), new TerminalCloseAction(this));
 				builder.build().showDialog(getTextGUI());
 				break;
 			case 'p':
 				builder = new ActionListDialogBuilder().setTitle("System");
 				OnlineInkarnation inkarnation = table.getSelectedOnlineInkarnation();
-				builder.addActions(new ProcessStartAction(inkarnation), new ProcessRestartAction(inkarnation), new ProcessStoppAction(inkarnation), new ProcessDetailAction(this.getTextGUI(), inkarnation));
+				builder.addActions(new ProcessStartAction(inkarnation), new ProcessRestartAction(inkarnation),
+						new ProcessStoppAction(inkarnation), new ProcessDetailAction(this.getTextGUI(), inkarnation));
 				builder.build().showDialog(getTextGUI());
 				break;
 			case 'e':
 				StartStoppEditWindow editWindow = new StartStoppEditWindow();
 				getTextGUI().addWindow(editWindow);
 				break;
+			default:
+				System.err.println(keyStroke);
+				break;
 			}
 			break;
-			
+
 		case Escape:
 			close();
 			break;
-			
+
 		default:
 			break;
 		}
@@ -95,7 +102,7 @@ public class StartStoppOnlineWindow extends BasicWindow implements WindowListene
 	@Override
 	public void onUnhandledInput(Window basePane, KeyStroke keyStroke, AtomicBoolean hasBeenHandled) {
 		// TODO Auto-generated method stub
-
+		System.err.println("Unhandled: " + keyStroke);
 	}
 
 	@Override
